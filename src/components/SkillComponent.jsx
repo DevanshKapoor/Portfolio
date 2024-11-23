@@ -9,7 +9,7 @@ const SkillComponent = ({ skill = "nan", info }) => {
             className="mx-auto text-3xl md:text-4xl lg:text-5xl"
             color="gold"
           />
-          <h3 className="text-xl md:text-2xl lg:text-3xl text-center text-yellow-400">
+          <h3 className="text-xl md:text-2xl lg:text-3xl text-center text-yellow-400" >
             {skill}
           </h3>
         </div>
