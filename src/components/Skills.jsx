@@ -8,10 +8,10 @@ const Skills = () => {
 
     return (
     <>
-        <div className="h-[110vh] f">
+        <div className="sm:h-[110vh] f">
             <h2 id="skills" className="text-3xl md:text-4xl lg:5xl pt-[2.5%] roboto-bold text-center ">My Skills </h2>
             <p className="text-center text-xl md:text-xl  p-[3vh] text-gray-400 ">Turning ideas into reality with these tools and technologies</p>
-            <div className="flex justify-around flex-wrap p-[5vh] ">
+            <div className="flex flex-col sm:flex-row justify-around md:flex-wrap sm:p-[5vh] items-center min-w-[70vw]  ">
                 <SkillComponent skill="Machine Learning" info="With hands-on experience in developing and deploying machine learning models, I specialize in computer vision and natural language processing. I've successfully implemented deep learning solutions using TensorFlow and PyTorch, created recommendation systems, and developed automated data pipelines. My expertise includes feature engineering, model optimization, and translating complex ML solutions into business value."/>
                 <SkillComponent skill="Web Development" info="As a full-stack developer, I craft responsive and intuitive web applications using modern frameworks like React and Node.js. I focus on building scalable architectures. My expertise lies in Front End Web Development. I have made and deployed several websites."/>
             </div>
