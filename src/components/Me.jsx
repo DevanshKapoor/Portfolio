@@ -3,7 +3,7 @@ import me from "../assets/MyImage.png"
 const Me = () => {
   return (
     <>
-    <div className="flex justify-between p-10">
+    <div className="flex justify-between p-2 sm:p-10 mb-24">
         <AboutContent/>
         <image className="roboto-bold">
             <img src={me} alt="me" className=" lg:h-[80vh] drop-shadow-[0_0_3px_white]"/>
