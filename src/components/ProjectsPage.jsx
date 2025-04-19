@@ -1,136 +1,144 @@
-import React, { useState } from 'react';
-import { Github, ExternalLink, Search } from 'lucide-react';
-import projects from '../assets/projects.json';
-import testImage from '../images/DSC_3259.jpg';
+import { useState } from "react";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
+import FarmSaathi from "../images/FarmSaathi.png";
+const ProjectCard = ({ 
+  title, 
+  description, 
+  technologies, 
+  image, 
+  github, 
+  liveLink,
+  achievements = []
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <motion.div 
+      className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-500/50 transition-all duration-300"
+      whileHover={{ y: -5 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative overflow-hidden" style={{ height: "220px" }}>
+        <img 
+          src={image || "/api/placeholder/600/400"} 
+          alt={title} 
+          className="w-full h-full object-cover transition-transform duration-700"
+          style={{ 
+            transform: isHovered ? "scale(1.05)" : "scale(1)" 
+          }}
+        />
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent opacity-70"></div>
+        
+        {/* Project links */}
+        <div className="absolute top-4 right-4 flex gap-3">
+          {github && (
+            <a 
+              href={github} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-gray-800/80 hover:bg-yellow-500 text-white hover:text-black p-2 rounded-full transition-colors"
+              aria-label="View GitHub repository"
+            >
+              <FaGithub className="text-lg" />
+            </a>
+          )}
+          
+          {liveLink && (
+            <a 
+              href={liveLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-gray-800/80 hover:bg-yellow-500 text-white hover:text-black p-2 rounded-full transition-colors"
+              aria-label="View live project"
+            >
+              <FaExternalLinkAlt className="text-lg" />
+            </a>
+          )}
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <h3 className="text-2xl font-bold mb-3 text-yellow-500">{title}</h3>
+        
+        <p className="text-gray-300 mb-4">{description}</p>
+        
+        {achievements.length > 0 && (
+          <ul className="mb-4 space-y-1">
+            {achievements.map((achievement, index) => (
+              <li key={index} className="flex items-start">
+                <span className="text-yellow-500 mr-2">•</span>
+                <span className="text-gray-400 text-sm">{achievement}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        
+        <div className="flex flex-wrap gap-2 mt-4">
+          {technologies.map((tech, index) => (
+            <span 
+              key={index} 
+              className="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const ProjectsPage = () => {
-  const [filter, setFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const categories = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'web-development', label: 'Web Development' },
-    { id: 'machine-learning', label: 'Machine Learning' },
+  const projects = [
+    {
+      title: "FarmSaathi",
+      description: "AI-powered agricultural assistance platform with voice-enabled features.",
+      achievements: [
+        "Increased accessibility through multi-language support (Hindi, English, Punjabi)",
+        "Achieved 87% accuracy in weather-based crop recommendations",
+        "Implemented 92% precision in image recognition for crop analysis"
+      ],
+      technologies: ["TensorFlow", "Keras", "Node.js", "MongoDB", "React", "Tailwind CSS"],
+      image: "../images/FarmSaathi.png", 
+      github: "https://github.com/DevanshKapoor/farmsaathi"
+    },
+    {
+      title: "TimeCraft",
+      description: "Smart class rescheduling system that automates slot assignment.",
+      achievements: [
+        "Led a team of 4 developers",
+        "Resolved 95% of scheduling conflicts automatically",
+        "Reduced scheduling resolution time by 70%"
+      ],
+      technologies: ["MySQL", "React", "Node.js", "Python", "Web Sockets"],
+      image: "/api/placeholder/600/400", // Replace with actual image
+      github: "https://github.com/DevanshKapoor/timecraft"
+    }
+    // Add more projects based on your resume or additional work
   ];
 
-  const filteredProjects = projects.filter(project => {
-    const matchesFilter = filter === 'all' || project.category === filter;
-    const matchesSearch =
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
-
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div id="projects" className="text-center text-3xl md:text-4xl font-bold pt-[10vh]">PROJECTS</div>
-        <p className="text-center text-xl md:text-xl p-[3vh] text-gray-400">
-          Bringing ideas to life through code and creativity
-        </p>
-
-        {/* Filter and Search */}
-        <div className="mb-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="flex space-x-2">
-            {categories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => setFilter(category.id)}
-                className={`px-4 py-2 rounded-md transition-colors ${
-                  filter === category.id
-                    ? 'bg-yellow-400 text-black'
-                    : 'bg-black border border-yellow-400 text-white hover:bg-gray-800'
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 w-64"
-            />
-          </div>
+    <section id="projects" className="py-20 bg-gray-950">
+      <div className="container mx-auto px-4">
+        <div className="mb-16 text-center">
+          <h2 className="text-4xl font-bold mb-4">
+            My <span className="text-yellow-500">Projects</span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Explore some of my recent work, featuring deep learning models, web applications, and research projects.
+          </p>
         </div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          {filteredProjects.map(project => {
-            // Dynamically import image
-            let imageSrc;
-            try {
-                imageSrc = new URL(`../${project.image}`, import.meta.url).href;
-            } catch (err) {
-            imageSrc = `https://via.placeholder.com/400x250?text=${project.title}`;
-            }
-
-            return (
-              <div
-                key={project.id}
-                className="bg-black border border-yellow-400 rounded-lg overflow-hidden hover:bg-slate-900"
-              >
-                <img
-                  src={imageSrc}
-                  alt={project.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-semibold text-zinc-200">{project.title}</h3>
-                    <span className="px-3 py-1 bg-yellow-400 text-slate-500 text-sm rounded-full border border-slate-500">
-                      {project.category === 'web-development' ? 'Web Dev' : 'ML'}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map(tech => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex space-x-4">
-                    <a
-                      href={project.github}
-                      className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
-                    >
-                      <Github className="w-5 h-5" />
-                      <span>Code</span>
-                    </a>
-                    <a
-                      href={project.liveDemo}
-                      className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                      <span>Live Demo</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <ProjectCard key={index} {...project} />
+          ))}
         </div>
-
-        {/* No Results Message */}
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-600">No projects found matching your criteria.</p>
-          </div>
-        )}
       </div>
-    </div>
+    </section>
   );
 };
 
