@@ -122,7 +122,7 @@ const Navbar = () => {
               <FaLinkedin className="text-xl" />
             </a>
             <a 
-              href="https://drive.google.com/file/d/1IPeCL9xDMYrbDAIbcaH-h89XoVsiEACk/view?usp=sharing" 
+              href="https://drive.google.com/file/d/1W_jE1CvgIJmWJsc3oArNiFdeE8PqvHLb/view?usp=drivesdk" 
               target="_blank" 
               rel="noopener noreferrer"
               className="ml-2 px-4 py-2 border border-yellow-500 rounded-md text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors"

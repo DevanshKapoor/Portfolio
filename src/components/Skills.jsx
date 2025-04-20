@@ -160,7 +160,7 @@ const Skills = () => {
         {/* Resume button */}
         <div className="mt-16 text-center">
           <a 
-            href="https://drive.google.com/file/d/1IPeCL9xDMYrbDAIbcaH-h89XoVsiEACk/view?usp=sharing" 
+            href="https://drive.google.com/file/d/1W_jE1CvgIJmWJsc3oArNiFdeE8PqvHLb/view?usp=drivesdk" 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-8 py-3 bg-yellow-500 text-black font-medium rounded-full hover:bg-yellow-600 transition-colors"
