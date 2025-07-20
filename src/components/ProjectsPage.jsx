@@ -235,7 +235,6 @@ const ProjectsPage = () => {
       technologies: ["TensorFlow", "Keras", "HuggingFace Transformers", "OpenCV", "Pandas", "MongoDB", "Web Speech API", "REST API"],
       image: farmsaathi, 
       github: "https://github.com/DevanshKapoor/farmsaathi",
-      liveLink: "https://farmsaathi.vercel.app",
       category: "Agriculture",
       icon: <FaLeaf />,
       stats: {
@@ -255,7 +254,6 @@ const ProjectsPage = () => {
       technologies: ["React", "Node.js", "MySQL", "WebSockets", "Express", "Algorithm Design", "Redux", "JWT Auth"],
       image: timecraft, 
       github: "https://github.com/DevanshKapoor/TimeCraft",
-      liveLink: "https://timecraft-scheduler.vercel.app",
       category: "Education",
       icon: <FaGraduationCap />,
       stats: {
@@ -275,7 +273,6 @@ const ProjectsPage = () => {
       technologies: ["React", "Firebase", "Material UI", "Chart.js", "OAuth", "PWA", "Service Workers", "Cloud Functions"],
       image: eduzone, 
       github: "https://github.com/DevanshKapoor/EduZone",
-      liveLink: "https://eduzone-learn.vercel.app",
       category: "Education",
       icon: <FaGraduationCap />,
       stats: {

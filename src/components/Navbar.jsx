@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaLinkedin, FaDownload } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -18,42 +18,89 @@ const Navbar = () => {
     { id: "links", label: "Contact" }
   ];
 
-  // Handle scroll effects with direction detection
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+  // Throttle function to reduce scroll event frequency
+  const throttle = (func, delay) => {
+    let timeoutId;
+    let lastExecTime = 0;
+    return function (...args) {
+      const currentTime = Date.now();
       
-      // Set navbar background when scrolled
-      setScrolled(currentScrollY > 50);
-      
-      // Determine scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setScrollDirection("down");
+      if (currentTime - lastExecTime > delay) {
+        func.apply(this, args);
+        lastExecTime = currentTime;
       } else {
-        setScrollDirection("up");
-      }
-      setLastScrollY(currentScrollY);
-      
-      // Update active section based on scroll position
-      for (const item of navItems) {
-        const element = document.getElementById(item.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            setActiveSection(item.id);
-            break;
-          }
-        }
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          func.apply(this, args);
+          lastExecTime = Date.now();
+        }, delay - (currentTime - lastExecTime));
       }
     };
+  };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, navItems]);
+  // Handle scroll effects with direction detection
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    
+    // Set navbar background when scrolled
+    setScrolled(currentScrollY > 50);
+    
+    // Determine scroll direction
+    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      setScrollDirection("down");
+    } else {
+      setScrollDirection("up");
+    }
+    setLastScrollY(currentScrollY);
+    
+    // Update active section based on scroll position with better logic
+    const sections = navItems.map(item => {
+      const element = document.getElementById(item.id);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        return {
+          id: item.id,
+          top: rect.top,
+          bottom: rect.bottom,
+          height: rect.height
+        };
+      }
+      return null;
+    }).filter(Boolean);
+
+    // Find the section that's most visible in the viewport
+    let newActiveSection = activeSection;
+    const viewportCenter = window.innerHeight / 2;
+    
+    for (const section of sections) {
+      if (section.top <= viewportCenter && section.bottom >= viewportCenter) {
+        if (section.id !== activeSection) {
+          newActiveSection = section.id;
+        }
+        break;
+      }
+    }
+    
+    // Only update if there's actually a change
+    if (newActiveSection !== activeSection) {
+      setActiveSection(newActiveSection);
+    }
+  }, [lastScrollY, activeSection]);
+
+  // Throttled scroll handler
+  const throttledHandleScroll = useCallback(throttle(handleScroll, 16), [handleScroll]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", throttledHandleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", throttledHandleScroll);
+  }, [throttledHandleScroll]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
+      // Immediately update active section to prevent glitching
+      setActiveSection(sectionId);
+      
       window.scrollTo({
         top: element.offsetTop - 80,
         behavior: "smooth"
@@ -186,12 +233,20 @@ const Navbar = () => {
                     }`}
                   >
                     {item.label}
-                    {/* Active section indicator */}
+                    {/* Active section indicator - Fixed version */}
                     {activeSection === item.id && (
                       <motion.div
                         className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full"
-                        layoutId="activeSection"
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        exit={{ scaleX: 0, opacity: 0 }}
+                        transition={{ 
+                          type: "spring", 
+                          stiffness: 400, 
+                          damping: 25,
+                          duration: 0.3
+                        }}
+                        style={{ originX: 0 }}
                       />
                     )}
                   </button>

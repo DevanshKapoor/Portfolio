@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import tailwind from "../assets/Tailwind.jpeg";
 
 // Tech tile component with hover effect and animation
 const TechTile = ({ name, icon, category, proficiency, description }) => {
@@ -196,7 +197,7 @@ const Stack = () => {
       items: [
         { name: "React", icon: icons.react, proficiency: 4, category: "Frontend", description: "Component-based UI development" },
         { name: "Next.js", icon: icons.nextjs, proficiency: 4, category: "React Framework", description: "Full-stack React applications with SSR" },
-        { name: "Tailwind CSS", icon: icons.tailwind, proficiency: 4, category: "Styling", description: "Utility-first CSS framework" },
+        { name: "Tailwind CSS", icon: tailwind, proficiency: 4, category: "Styling", description: "Utility-first CSS framework" },
         { name: "Node.js", icon: icons.nodejs, proficiency: 4, category: "Backend", description: "JavaScript runtime for server applications" },
         { name: "Flask", icon: icons.flask, proficiency: 4, category: "Python Web", description: "Lightweight web framework for ML APIs" },
         { name: "FastAPI", icon: icons.fastapi, proficiency: 4, category: "Python Web", description: "High-performance API development" }
