@@ -214,7 +214,7 @@ const ProjectsPage = () => {
         "GraphSAGE-based GNN implementation for complex behavioral pattern recognition"
       ],
       technologies: ["Python", "PyTorch", "TensorFlow", "GraphSAGE", "NetworkX", "MySQL", "WebSockets", "Node.js", "Docker", "Flask"],
-      image: {canguard}, 
+      image: canguard, 
       github: "https://github.com/DevanshKapoor/canguard-ai",
       category: "Security",
       icon: <FaShieldAlt />,
